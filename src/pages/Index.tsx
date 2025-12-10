@@ -1,211 +1,271 @@
+import { useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Input } from '@/components/ui/input';
 import Icon from '@/components/ui/icon';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const Index = () => {
-  const expensesData = [
-    { name: 'Серверы', value: 15000, color: '#7551E9' },
-    { name: 'Коммуникации', value: 8000, color: '#3965FF' },
-    { name: 'Веб-сайты', value: 5000, color: '#FFB547' },
-    { name: 'Безопасность', value: 3000, color: '#01B574' }
-  ];
+  const barChartRef = useRef<HTMLCanvasElement>(null);
+  const doughnutChartRef = useRef<HTMLCanvasElement>(null);
 
-  const totalExpenses = expensesData.reduce((sum, item) => sum + item.value, 0);
+  useEffect(() => {
+    if (!barChartRef.current || !doughnutChartRef.current) return;
 
-  const stats = [
-    {
-      title: 'Общие расходы',
-      value: `${totalExpenses.toLocaleString('ru-RU')} ₽`,
-      icon: 'DollarSign',
-      color: 'from-purple-500 to-purple-600',
-      change: '+12.5%'
-    },
-    {
-      title: 'Серверы',
-      value: '15 000 ₽',
-      icon: 'Server',
-      color: 'from-blue-500 to-blue-600',
-      change: '+8.2%'
-    },
-    {
-      title: 'Коммуникации',
-      value: '8 000 ₽',
-      icon: 'Radio',
-      color: 'from-orange-500 to-orange-600',
-      change: '+5.1%'
-    },
-    {
-      title: 'Безопасность',
-      value: '3 000 ₽',
-      icon: 'Shield',
-      color: 'from-green-500 to-green-600',
-      change: '+3.4%'
-    }
-  ];
+    const barCtx = barChartRef.current.getContext('2d');
+    const doughnutCtx = doughnutChartRef.current.getContext('2d');
+
+    if (!barCtx || !doughnutCtx) return;
+
+    const barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Серверы', 'Коммуникации', 'Веб-сайты', 'Безопасность'],
+        datasets: [{
+          label: 'Расходы',
+          data: [15000, 8000, 5000, 3000],
+          backgroundColor: [
+            'rgba(117, 81, 233, 0.8)',
+            'rgba(57, 101, 255, 0.8)',
+            'rgba(255, 181, 71, 0.8)',
+            'rgba(1, 181, 116, 0.8)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#a3aed0' },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          y: {
+            ticks: { color: '#a3aed0' },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          }
+        }
+      }
+    });
+
+    const doughnutChart = new Chart(doughnutCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Серверы', 'Коммуникации', 'Веб-сайты', 'Безопасность'],
+        datasets: [{
+          data: [15000, 8000, 5000, 3000],
+          backgroundColor: [
+            'rgba(117, 81, 233, 0.8)',
+            'rgba(57, 101, 255, 0.8)',
+            'rgba(255, 181, 71, 0.8)',
+            'rgba(1, 181, 116, 0.8)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        }
+      }
+    });
+
+    return () => {
+      barChart.destroy();
+      doughnutChart.destroy();
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-muted/30 to-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Дашборд расходов
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Визуализация и анализ финансовых данных компании
-          </p>
+    <div className="flex min-h-screen">
+      <aside className="w-[250px] bg-[#1b254b] border-r border-white/10 fixed left-0 top-0 h-screen">
+        <a href="#" className="flex items-center gap-3 px-5 py-5 pb-[30px] border-b border-white/10">
+          <div className="w-8 h-8 bg-primary rounded-[10px] flex items-center justify-center font-bold text-white">
+            V
+          </div>
+          <span className="text-white font-semibold">Vision UI</span>
+        </a>
+        <ul className="px-[15px] py-5 space-y-1">
+          <li>
+            <a href="#" className="flex items-center gap-3 px-[15px] py-3 rounded-lg bg-primary text-white">
+              <Icon name="Home" size={20} />
+              <span>Дашборд</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" className="flex items-center gap-3 px-[15px] py-3 rounded-lg text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              <Icon name="CreditCard" size={20} />
+              <span>Платежи</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" className="flex items-center gap-3 px-[15px] py-3 rounded-lg text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+              <Icon name="Box" size={20} />
+              <span>Сервисы</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <main className="ml-[250px] p-5 min-h-screen flex-1">
+        <header className="flex justify-between items-center mb-[30px] px-[25px] py-[15px] bg-[#1b254b]/50 backdrop-blur-[20px] rounded-2xl border border-white/10">
+          <div className="flex items-center gap-3 bg-card border border-white/10 rounded-xl px-5 py-3 w-[400px]">
+            <Icon name="Search" size={20} className="text-muted-foreground" />
+            <Input 
+              type="text" 
+              placeholder="Поиск сервисов..." 
+              className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
+            />
+          </div>
+          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
+            <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-white">
+              А
+            </div>
+            <div>
+              <div className="text-sm font-medium">Администратор</div>
+              <div className="text-xs text-muted-foreground">Администратор</div>
+            </div>
+          </div>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-[30px]">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start mb-5">
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Общие IT Расходы</h3>
+                  <p className="text-sm text-muted-foreground">Все время</p>
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
+                  <Icon name="Server" size={20} />
+                </div>
+              </div>
+              <div className="text-[32px] font-extrabold mb-2">0 ₽</div>
+              <p className="text-sm text-muted-foreground">Начните добавлять платежи</p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start mb-5">
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Серверная Инфраструктура</h3>
+                  <p className="text-sm text-muted-foreground">Расходы на серверы</p>
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
+                  <Icon name="Database" size={20} />
+                </div>
+              </div>
+              <div className="text-[32px] font-extrabold mb-2">0 ₽</div>
+              <p className="text-sm text-muted-foreground">0% от общего бюджета</p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start mb-5">
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Всего Платежей</h3>
+                  <p className="text-sm text-muted-foreground">История операций</p>
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
+                  <Icon name="Box" size={20} />
+                </div>
+              </div>
+              <div className="text-[32px] font-extrabold mb-2">0</div>
+              <p className="text-sm text-muted-foreground">платежей за все время</p>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card 
-              key={index} 
-              className="border-2 hover:border-primary transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-scale-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
-                    <Icon name={stat.icon} size={24} className="text-white" />
-                  </div>
-                  <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                    {stat.change}
-                  </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-[30px]">
+          {[
+            { icon: 'Server', label: 'Серверы', value: '0 ₽' },
+            { icon: 'MessageSquare', label: 'Коммуникации', value: '0 ₽' },
+            { icon: 'Globe', label: 'Веб-сайты', value: '0 ₽' },
+            { icon: 'Shield', label: 'Безопасность', value: '0 ₽' }
+          ].map((item, index) => (
+            <Card key={index} className="border-white/5 bg-card">
+              <CardContent className="p-5 flex items-center gap-[15px]">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                  <Icon name={item.icon} size={20} />
                 </div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-1">
-                  {stat.title}
-                </h3>
-                <p className="text-2xl font-bold">
-                  {stat.value}
-                </p>
+                <div>
+                  <div className="text-xl font-extrabold mb-0.5">{item.value}</div>
+                  <p className="text-sm text-muted-foreground">{item.label}</p>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="border-2 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-[30px]">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Icon name="BarChart3" size={24} className="text-primary" />
-                Расходы по категориям
-              </CardTitle>
+              <CardTitle>IT Расходы по Категориям</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={expensesData}>
-                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                  <XAxis 
-                    dataKey="name" 
-                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <YAxis 
-                    tick={{ fill: 'hsl(var(--muted-foreground))' }}
-                  />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '2px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                    formatter={(value: number) => [`${value.toLocaleString('ru-RU')} ₽`, 'Сумма']}
-                  />
-                  <Legend />
-                  <Bar 
-                    dataKey="value" 
-                    name="Расходы"
-                    radius={[8, 8, 0, 0]}
-                  >
-                    {expensesData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+              <div className="h-[350px] relative">
+                <canvas ref={barChartRef}></canvas>
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="border-2 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Icon name="PieChart" size={24} className="text-secondary" />
-                Распределение расходов
-              </CardTitle>
+              <CardTitle>Распределение Затрат</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={expensesData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {expensesData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--card))',
-                      border: '2px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                    formatter={(value: number) => [`${value.toLocaleString('ru-RU')} ₽`, 'Сумма']}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="h-[350px] relative">
+                <canvas ref={doughnutChartRef}></canvas>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-2 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="List" size={24} className="text-accent" />
-              Детальная разбивка расходов
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {expensesData.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-center justify-between p-4 rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-4 h-4 rounded-full" 
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span className="font-semibold">{item.name}</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-48 bg-muted rounded-full h-2">
-                      <div 
-                        className="h-2 rounded-full transition-all duration-500"
-                        style={{ 
-                          width: `${(item.value / totalExpenses) * 100}%`,
-                          backgroundColor: item.color
-                        }}
-                      />
-                    </div>
-                    <span className="font-bold text-lg min-w-[120px] text-right">
-                      {item.value.toLocaleString('ru-RU')} ₽
-                    </span>
-                    <span className="text-sm text-muted-foreground min-w-[60px] text-right">
-                      {((item.value / totalExpenses) * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                </div>
-              ))}
+        <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-center mb-5">
+              <h3 className="text-lg font-bold">IT Сервисы и Расходы</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Сервис</th>
+                    <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Категория</th>
+                    <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Сумма (₽)</th>
+                    <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Дата</th>
+                    <th className="text-left py-4 px-4 text-sm font-bold text-muted-foreground">Статус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan={5} className="text-center py-10">
+                      <Icon name="CreditCard" size={48} className="mx-auto mb-4 opacity-50 text-muted-foreground" />
+                      <div className="text-muted-foreground">Платежи не найдены</div>
+                      <div className="text-sm text-muted-foreground mt-2.5">Добавьте первый платеж</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 };
