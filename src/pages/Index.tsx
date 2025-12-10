@@ -120,9 +120,9 @@ const Index = () => {
         </ul>
       </aside>
 
-      <main className="ml-[250px] p-5 min-h-screen flex-1">
-        <header className="flex justify-between items-center mb-[30px] px-[25px] py-[15px] bg-[#1b254b]/50 backdrop-blur-[20px] rounded-2xl border border-white/10">
-          <div className="flex items-center gap-3 bg-card border border-white/10 rounded-xl px-5 py-3 w-[400px]">
+      <main className="ml-[250px] p-[30px] min-h-screen flex-1">
+        <header className="flex justify-between items-center mb-[30px] px-[25px] py-[18px] bg-[#1b254b]/50 backdrop-blur-[20px] rounded-[15px] border border-white/10">
+          <div className="flex items-center gap-3 bg-card border border-white/10 rounded-[15px] px-5 py-[10px] w-[400px]">
             <Icon name="Search" size={20} className="text-muted-foreground" />
             <Input 
               type="text" 
@@ -130,7 +130,7 @@ const Index = () => {
               className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
             />
           </div>
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex items-center gap-3 px-[15px] py-[10px] rounded-[12px] bg-white/5 border border-white/10">
             <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-white">
               А
             </div>
@@ -141,12 +141,12 @@ const Index = () => {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-[30px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-[30px]">
           <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-5">
                 <div>
-                  <h3 className="text-lg font-bold mb-2">Общие IT Расходы</h3>
+                  <h3 className="text-base font-bold mb-[5px]">Общие IT Расходы</h3>
                   <p className="text-sm text-muted-foreground">Все время</p>
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
@@ -158,34 +158,34 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
-            <CardContent className="p-6">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)] rounded-[20px]">
+            <CardContent className="p-[25px]">
               <div className="flex justify-between items-start mb-5">
                 <div>
-                  <h3 className="text-lg font-bold mb-2">Серверная Инфраструктура</h3>
+                  <h3 className="text-base font-bold mb-[5px]">Серверная Инфраструктура</h3>
                   <p className="text-sm text-muted-foreground">Расходы на серверы</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
+                <div className="w-[45px] h-[45px] rounded-[12px] bg-primary/10 flex items-center justify-center text-primary text-xl">
                   <Icon name="Database" size={20} />
                 </div>
               </div>
-              <div className="text-[32px] font-extrabold mb-2">0 ₽</div>
+              <div className="text-[34px] font-extrabold mb-[5px] leading-[42px]">0 ₽</div>
               <p className="text-sm text-muted-foreground">0% от общего бюджета</p>
             </CardContent>
           </Card>
 
-          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
-            <CardContent className="p-6">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)] rounded-[20px]">
+            <CardContent className="p-[25px]">
               <div className="flex justify-between items-start mb-5">
                 <div>
-                  <h3 className="text-lg font-bold mb-2">Всего Платежей</h3>
+                  <h3 className="text-base font-bold mb-[5px]">Всего Платежей</h3>
                   <p className="text-sm text-muted-foreground">История операций</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-xl">
+                <div className="w-[45px] h-[45px] rounded-[12px] bg-primary/10 flex items-center justify-center text-primary text-xl">
                   <Icon name="Box" size={20} />
                 </div>
               </div>
-              <div className="text-[32px] font-extrabold mb-2">0</div>
+              <div className="text-[34px] font-extrabold mb-[5px] leading-[42px]">0</div>
               <p className="text-sm text-muted-foreground">платежей за все время</p>
             </CardContent>
           </Card>
@@ -198,13 +198,13 @@ const Index = () => {
             { icon: 'Globe', label: 'Веб-сайты', value: '0 ₽' },
             { icon: 'Shield', label: 'Безопасность', value: '0 ₽' }
           ].map((item, index) => (
-            <Card key={index} className="border-white/5 bg-card">
-              <CardContent className="p-5 flex items-center gap-[15px]">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+            <Card key={index} className="border-white/5 bg-card rounded-[20px]">
+              <CardContent className="p-[20px] flex items-center gap-[15px]">
+                <div className="w-[56px] h-[56px] rounded-[15px] bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
                   <Icon name={item.icon} size={20} />
                 </div>
                 <div>
-                  <div className="text-xl font-extrabold mb-0.5">{item.value}</div>
+                  <div className="text-2xl font-bold mb-[2px] leading-[32px]">{item.value}</div>
                   <p className="text-sm text-muted-foreground">{item.label}</p>
                 </div>
               </CardContent>
@@ -212,8 +212,8 @@ const Index = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-[30px]">
-          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-[30px]">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)] rounded-[20px]">
             <CardHeader>
               <CardTitle>IT Расходы по Категориям</CardTitle>
             </CardHeader>
@@ -224,7 +224,7 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+          <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)] rounded-[20px]">
             <CardHeader>
               <CardTitle>Распределение Затрат</CardTitle>
             </CardHeader>
@@ -236,8 +236,8 @@ const Index = () => {
           </Card>
         </div>
 
-        <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
-          <CardContent className="p-6">
+        <Card className="border-white/5 bg-card shadow-[0_4px_20px_rgba(0,0,0,0.25)] rounded-[20px]">
+          <CardContent className="p-[25px]">
             <div className="flex justify-between items-center mb-5">
               <h3 className="text-lg font-bold">IT Сервисы и Расходы</h3>
             </div>
